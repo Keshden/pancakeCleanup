@@ -5,8 +5,8 @@
 using namespace std;
 
 void pancakeGenerator(bool [], int);
-void pancakeIllustrator(bool [], int, int);
-void pancakeSolver(bool [], int, int);
+void pancakeIllustrator(bool [], int);
+void pancakeSolver(bool [], int);
 bool checkCompletion(bool [], int);
 
 int main()
@@ -45,7 +45,7 @@ int main()
       //As a test, do a run through to make sure it retained all that information.
       cout << "Here is the randomized stack of " << pcInput << " Pancakes, from top of stack to bottom(plate)" << endl;
       cout << "The stacks are displayed in groups of 10\n";
-      pancakeIllustrator(pancakeStack, pcamt, 0);
+      pancakeIllustrator(pancakeStack, pcamt);
 
       //Need to find the best grouping to flip the stack, so that become closer to perfection.
       same = checkCompletion(pancakeStack, pcamt);
@@ -55,28 +55,28 @@ int main()
       while(same == false)
       {
         //Create variable to go through and find biggest possible place to flip
-        int findGrouping = 0;
+        int findGrouping = pcamt;
 
         //Check to see if bottom of stack is good or not, if it is, don't touch
         if(pancakeStack[findGrouping] == true)
         {
-          findGrouping++;
+          findGrouping--;
 
           //Obviously, if multiple consecutive pancakes(at bottom) are good, don't touch any
-          while(pancakeStack[findGrouping] == pancakeStack[findGrouping-1])
+          while(pancakeStack[findGrouping] == pancakeStack[findGrouping+1])
           {
-            findGrouping++;
+            findGrouping--;
           }
 
           //Now you have found the first possible flipping possition.  Check if matches the top.
-          if(pancakeStack[findGrouping] == pancakeStack[pcamt])
+          if(pancakeStack[findGrouping] == pancakeStack[0])
           {
             //If it is the same, then simply flip that whole section.
             //Call the solver function to flip the stack.
-            pancakeSolver(pancakeStack, pcamt, findGrouping);
+            pancakeSolver(pancakeStack, findGrouping);
 
             //Display updated stack of pancakeStack
-            pancakeIllustrator(pancakeStack, pcamt, 0);
+            pancakeIllustrator(pancakeStack, pcamt);
 
             //Call the checker to see if it is done
             same = checkCompletion(pancakeStack, pcamt);
@@ -90,17 +90,17 @@ int main()
           else
           {
             //If it isn't the same, then shuffle through to next possible position.
-            findGrouping++;
-            while(pancakeStack[findGrouping] == pancakeStack[findGrouping-1])
+            findGrouping--;
+            while(pancakeStack[findGrouping] == pancakeStack[findGrouping+1])
             {
-              findGrouping++;
+              findGrouping--;
             }
 
             //Call the solver function to flip the stack.
-            pancakeSolver(pancakeStack, pcamt, findGrouping);
+            pancakeSolver(pancakeStack, findGrouping);
 
             //Display updated stack of pancakeStack
-            pancakeIllustrator(pancakeStack, pcamt, 0);
+            pancakeIllustrator(pancakeStack, pcamt);
 
             //Call the checker to see if it is done
             same = checkCompletion(pancakeStack, pcamt);
@@ -114,14 +114,14 @@ int main()
         else
         {
           //Now you have found the first possible flipping possition.  Check if matches the top.
-          if(pancakeStack[findGrouping] == pancakeStack[pcamt])
+          if(pancakeStack[findGrouping] == pancakeStack[0])
           {
             //If it is the same, then simply flip that whole section.
             //Call the solver function to flip the stack.
-            pancakeSolver(pancakeStack, pcamt, findGrouping);
+            pancakeSolver(pancakeStack, findGrouping);
 
             //Display updated stack of pancakeStack
-            pancakeIllustrator(pancakeStack, pcamt, 0);
+            pancakeIllustrator(pancakeStack, pcamt);
 
             //Call the checker to see if it is done
             same = checkCompletion(pancakeStack, pcamt);
@@ -135,17 +135,17 @@ int main()
           else
           {
             //If it isn't the same, then shuffle through to next possible position.
-            findGrouping++;
-            while(pancakeStack[findGrouping] == pancakeStack[findGrouping-1])
+            findGrouping--;
+            while(pancakeStack[findGrouping] == pancakeStack[findGrouping+1])
             {
-              findGrouping++;
+              findGrouping--;
             }
 
             //Call the solver function to flip the stack.
-            pancakeSolver(pancakeStack, pcamt, findGrouping);
+            pancakeSolver(pancakeStack, findGrouping);
 
             //Display updated stack of pancakeStack
-            pancakeIllustrator(pancakeStack, pcamt, 0);
+            pancakeIllustrator(pancakeStack, pcamt);
 
             //Call the checker to see if it is done
             same = checkCompletion(pancakeStack, pcamt);
@@ -159,7 +159,7 @@ int main()
         flips++;
       }
       cout << "Here is the completed stack" << endl;
-      pancakeIllustrator(pancakeStack, pcamt, 0);
+      pancakeIllustrator(pancakeStack, pcamt);
       cout << "It took " << flips << " flips to correct the stack.\n";
       cout << "Would you like to do it again?<Y/N>\n";
       cin >> validity;
@@ -190,37 +190,38 @@ void pancakeGenerator(bool generatedPancake[], int amount)
   }
 }
 
-void pancakeIllustrator(bool pancake[], int pcamt, int min = 0)
+void pancakeIllustrator(bool pancake[], int pcamt)
 {
   //create a variable to run through the stack of pancakes
   int z = 0;
 
   //Now display the pancakes from the top of the stack, to the bottom.
-  for(z = pcamt; min <= z && z <= pcamt; z--)
+  for(z; 0 <= z && z <= pcamt; z++)
   {
     cout << pancake[z] << " ";
-    if(z % 10 == 0)
+    if(pcamt % 10 == 0)
       cout << endl;
   }
+  cout << endl;
 }
 
 
-void pancakeSolver(bool pancakeMess[], int max, int min = 0)
+void pancakeSolver(bool pancakeMess[], int max)
 {
   //create necessary variables to use to fix the stack
   int iterator = max;
-  int frontrunner = min;
+  int frontrunner = 0;
   bool modify[max];
 
   //Create the modified, or flipped batch.
-  for(iterator; min <= iterator && iterator <= max; iterator--)
+  for(iterator; 0 <= iterator && iterator <= max; iterator--)
   {
     modify[frontrunner] = !(pancakeMess[iterator]);
     frontrunner++;
   }
 
   //Now change the original to the new/current state
-  for(iterator = min; min <= iterator && iterator <= max; iterator++)
+  for(iterator = 0; 0 <= iterator && iterator <= max; iterator++)
   {
     pancakeMess[iterator] = modify[iterator];
   }
