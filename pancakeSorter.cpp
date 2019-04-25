@@ -8,6 +8,7 @@ void pancakeGenerator(bool [], int);
 void pancakeIllustrator(bool [], int);
 void pancakeSolver(bool [], int);
 bool checkCompletion(bool [], int);
+bool findStack(bool [], int);
 
 int main()
 {
@@ -30,9 +31,9 @@ int main()
       {
         cout << "How many pancakes should there be?\n";
         cin >> pcInput;
-        cout << "You have chosen " << pcInput << ".  If this is correct, please enter a 'y' to continue.\n";
+        cout << "You have chosen " << pcInput << ".  Is this correct?<Y/N>\n";
         cin >> validity;
-        if(validity == "y" or validity == "yes")
+        if(validity == "y" or validity == "yes" or validity == "Y" or validity == "Yes")
           verify = true;
       }
 
@@ -54,116 +55,16 @@ int main()
 
       while(same == false)
       {
-        //Create variable to go through and find biggest possible place to flip
-        int findGrouping = pcamt;
-
-        //Check to see if bottom of stack is good or not, if it is, don't touch
-        if(pancakeStack[findGrouping] == true)
-        {
-          findGrouping--;
-
-          //Obviously, if multiple consecutive pancakes(at bottom) are good, don't touch any
-          while(pancakeStack[findGrouping] == pancakeStack[findGrouping+1])
-          {
-            findGrouping--;
-          }
-
-          //Now you have found the first possible flipping possition.  Check if matches the top.
-          if(pancakeStack[findGrouping] == pancakeStack[0])
-          {
-            //If it is the same, then simply flip that whole section.
-            //Call the solver function to flip the stack.
-            pancakeSolver(pancakeStack, findGrouping);
-
-            //Display updated stack of pancakeStack
-            pancakeIllustrator(pancakeStack, pcamt);
-
-            //Call the checker to see if it is done
-            same = checkCompletion(pancakeStack, pcamt);
-
-            if(same == true)
-              cout << "The stack is perfect!" << endl;
-            else
-              cout << "There are still problems with the stack" << endl;
-
-          }
-          else
-          {
-            //If it isn't the same, then shuffle through to next possible position.
-            findGrouping--;
-            while(pancakeStack[findGrouping] == pancakeStack[findGrouping+1])
-            {
-              findGrouping--;
-            }
-
-            //Call the solver function to flip the stack.
-            pancakeSolver(pancakeStack, findGrouping);
-
-            //Display updated stack of pancakeStack
-            pancakeIllustrator(pancakeStack, pcamt);
-
-            //Call the checker to see if it is done
-            same = checkCompletion(pancakeStack, pcamt);
-
-            if(same == true)
-              cout << "The stack is perfect!" << endl;
-            else
-              cout << "There are still problems with the stack" << endl;
-          }
-        }
-        else
-        {
-          //Now you have found the first possible flipping possition.  Check if matches the top.
-          if(pancakeStack[findGrouping] == pancakeStack[0])
-          {
-            //If it is the same, then simply flip that whole section.
-            //Call the solver function to flip the stack.
-            pancakeSolver(pancakeStack, findGrouping);
-
-            //Display updated stack of pancakeStack
-            pancakeIllustrator(pancakeStack, pcamt);
-
-            //Call the checker to see if it is done
-            same = checkCompletion(pancakeStack, pcamt);
-
-            if(same == true)
-              cout << "The stack is perfect!" << endl;
-            else
-              cout << "There are still problems with the stack" << endl;
-
-          }
-          else
-          {
-            //If it isn't the same, then shuffle through to next possible position.
-            findGrouping--;
-            while(pancakeStack[findGrouping] == pancakeStack[findGrouping+1])
-            {
-              findGrouping--;
-            }
-
-            //Call the solver function to flip the stack.
-            pancakeSolver(pancakeStack, findGrouping);
-
-            //Display updated stack of pancakeStack
-            pancakeIllustrator(pancakeStack, pcamt);
-
-            //Call the checker to see if it is done
-            same = checkCompletion(pancakeStack, pcamt);
-
-            if(same == true)
-              cout << "The stack is perfect!" << endl;
-            else
-              cout << "There are still problems with the stack" << endl;
-          }
-        }
+        same = findStack(pancakeStack, pcamt);
         flips++;
+
       }
       cout << "Here is the completed stack" << endl;
       pancakeIllustrator(pancakeStack, pcamt);
       cout << "It took " << flips << " flips to correct the stack.\n";
       cout << "Would you like to do it again?<Y/N>\n";
       cin >> validity;
-      if(validity == "y" or validity == "yes")
+      if(validity == "y" or validity == "yes" or validity == "Y" or validity == "Yes")
       {
         again = true;
         verify = false;
@@ -171,6 +72,7 @@ int main()
       else
         again = false;
     }
+
     return 0;
 }
 
@@ -236,4 +138,112 @@ bool checkCompletion(bool checking[], int max)
       return false;
   }
   return allTrue;
+}
+
+bool findStack(bool pancakeStack[], int pcamt)
+{
+  //Create variable to go through and find biggest possible place to flip
+  int findGrouping = pcamt;
+  bool same = false;
+
+  //Check to see if bottom of stack is good or not, if it is, don't touch
+  if(pancakeStack[findGrouping] == true)
+  {
+    findGrouping--;
+
+    //Obviously, if multiple consecutive pancakes(at bottom) are good, don't touch any
+    while(pancakeStack[findGrouping] == pancakeStack[findGrouping+1])
+    {
+      findGrouping--;
+    }
+
+    //Now you have found the first possible flipping possition.  Check if matches the top.
+    if(pancakeStack[findGrouping] == pancakeStack[0])
+    {
+      //If it is the same, then simply flip that whole section.
+      //Call the solver function to flip the stack.
+      pancakeSolver(pancakeStack, findGrouping);
+
+      //Display updated stack of pancakeStack
+      pancakeIllustrator(pancakeStack, pcamt);
+
+      //Call the checker to see if it is done
+      same = checkCompletion(pancakeStack, pcamt);
+
+      if(same == true)
+        cout << "The stack is perfect!" << endl;
+      else
+        cout << "There are still problems with the stack" << endl;
+
+    }
+    else
+    {
+      //If it isn't the same, then shuffle through to next possible position.
+      findGrouping--;
+      while(pancakeStack[findGrouping] == pancakeStack[findGrouping+1])
+      {
+        findGrouping--;
+      }
+
+      //Call the solver function to flip the stack.
+      pancakeSolver(pancakeStack, findGrouping);
+
+      //Display updated stack of pancakeStack
+      pancakeIllustrator(pancakeStack, pcamt);
+
+      //Call the checker to see if it is done
+      same = checkCompletion(pancakeStack, pcamt);
+
+      if(same == true)
+        cout << "The stack is perfect!" << endl;
+      else
+        cout << "There are still problems with the stack" << endl;
+    }
+  }
+  else
+  {
+    //Now you have found the first possible flipping possition.  Check if matches the top.
+    if(pancakeStack[findGrouping] == pancakeStack[0])
+    {
+      //If it is the same, then simply flip that whole section.
+      //Call the solver function to flip the stack.
+      pancakeSolver(pancakeStack, findGrouping);
+
+      //Display updated stack of pancakeStack
+      pancakeIllustrator(pancakeStack, pcamt);
+
+      //Call the checker to see if it is done
+      same = checkCompletion(pancakeStack, pcamt);
+
+      if(same == true)
+        cout << "The stack is perfect!" << endl;
+      else
+        cout << "There are still problems with the stack" << endl;
+
+    }
+    else
+    {
+      //If it isn't the same, then shuffle through to next possible position.
+      findGrouping--;
+      while(pancakeStack[findGrouping] == pancakeStack[findGrouping+1])
+      {
+        findGrouping--;
+      }
+
+      //Call the solver function to flip the stack.
+      pancakeSolver(pancakeStack, findGrouping);
+
+      //Display updated stack of pancakeStack
+      pancakeIllustrator(pancakeStack, pcamt);
+
+      //Call the checker to see if it is done
+      same = checkCompletion(pancakeStack, pcamt);
+
+      if(same == true)
+        cout << "The stack is perfect!" << endl;
+      else
+        cout << "There are still problems with the stack" << endl;
+    }
+  }
+  return same;
 }
