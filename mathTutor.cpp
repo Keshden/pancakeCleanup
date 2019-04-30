@@ -16,10 +16,49 @@
 
 #include<iostream>
 #include<cstdlib>
+#include <ctime>
+
 using namespace std;
 
 int main()
 {
+  int num1, num2, sum, userAnswer;
+  unsigned seed = time(0);
+  srand(seed);
+
+  num1 = rand() % 1000;
+  num2 = rand() % 1000;
+
+  cout << "Welcome to Math Tutor!\n";
+  cout << "\nThis Program will cover addition with Large Numbers";
+  cout << "-------------------------\n\n";
+
+  cout << "\t " << num1 << endl;
+  cout << "\t+" << num2 << endl;
+  cout << "\t----" << endl;
+  cout << "\t   ?" << endl;
+
+  sum = num1 + num2;
+
+  cout << "\n\nWhat is the sum of the 2 numbers?\n";
+  cin >> userAnswer;
+
+  if(userAnswer == sum)
+  {
+    cout << "\n\nThat is the correct answer!!!\n";
+    cout << "\t " << num1 << endl;
+    cout << "\t+" << num2 << endl;
+    cout << "\t----" << endl;
+    if(userAnswer / 1000 == 1)
+      cout << "\t" << userAnswer << "√√√" << endl;
+    else
+      cout << "\t " << userAnswer << "√√√" << endl;
+    cout << "Is correct.";
+  }
+  else
+    cout << "\n\nActually the answer is: " << sum << endl;
+
+//sum / 1000 == 1 ? cout << "\t" << sum << endl; : cout << "\t " << sum << endl;
 
 
   return 0;
