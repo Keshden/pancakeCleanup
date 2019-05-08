@@ -23,43 +23,56 @@ using namespace std;
 int main()
 {
   int num1, num2, sum, userAnswer;
-  unsigned seed = time(0);
-  srand(seed);
-
-  num1 = rand() % 1000;
-  num2 = rand() % 1000;
-
-  cout << "Welcome to Math Tutor!\n";
-  cout << "\nThis Program will cover addition with Large Numbers";
-  cout << "-------------------------\n\n";
-
-  cout << "\t " << num1 << endl;
-  cout << "\t+" << num2 << endl;
-  cout << "\t----" << endl;
-  cout << "\t   ?" << endl;
-
-  sum = num1 + num2;
-
-  cout << "\n\nWhat is the sum of the 2 numbers?\n";
-  cin >> userAnswer;
-
-  if(userAnswer == sum)
+  bool repeat = false;
+  /*
+  //Place before the loop?
+      cout << "Welcome to Math Tutor!\n";
+      cout << "\nThis Program will cover addition with Large Numbers(up to 3 digits)";
+      cout << "-------------------------\n\n";
+  */
+  do
   {
-    cout << "\n\nThat is the correct answer!!!\n";
+    unsigned seed = time(0);
+    srand(seed);
+
+    num1 = rand() % 1000;
+    num2 = rand() % 1000;
+
+    cout << "Welcome to Math Tutor!\n";
+    cout << "\nThis Program will cover addition with Large Numbers(up to 3 digits)";
+    cout << "-------------------------\n\n";
+    //If I do take the above and place before loop, maybe use this instead
+    //cout << "\n\nPlease solve the following addition problem.\n\n";
+
     cout << "\t " << num1 << endl;
     cout << "\t+" << num2 << endl;
     cout << "\t----" << endl;
-    if(userAnswer / 1000 == 1)
-      cout << "\t" << userAnswer << "√√√" << endl;
+    cout << "\t   ?" << endl;
+
+    sum = num1 + num2;
+
+    cout << "\n\nWhat is the solution?\n";
+    cin >> userAnswer;
+
+    if(userAnswer == sum)
+    {
+      cout << "\n\nThat is the correct answer!!!\n";
+      cout << "\t " << num1 << endl;
+      cout << "\t+" << num2 << endl;
+      cout << "\t----" << endl;
+      if(userAnswer / 1000 == 1)
+        cout << "\t" << userAnswer << "√√√" << endl;
+      else
+        cout << "\t " << userAnswer << "√√√" << endl;
+      cout << "Is correct.";
+    }
     else
-      cout << "\t " << userAnswer << "√√√" << endl;
-    cout << "Is correct.";
-  }
-  else
-    cout << "\n\nActually the answer is: " << sum << endl;
+    //Can use the √√√ as well as x's to denote what is correct and what is wrong
+    //can use nested if statements that will either place an X or a √ mark for each position.
+      cout << "\n\nActually the answer is: " << sum << endl;
 
-//sum / 1000 == 1 ? cout << "\t" << sum << endl; : cout << "\t " << sum << endl;
+  //sum / 1000 == 1 ? cout << "\t" << sum << endl; : cout << "\t " << sum << endl;
 
-
+  } while(repeat == true);
   return 0;
 }
