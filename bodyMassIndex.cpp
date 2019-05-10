@@ -8,6 +8,8 @@
     -After calculations ask user if they wish to repeat
     -Give user option to see what 'weight ranges' would be optimal
   Updated again to finish off the desired functionality. By: Keshden as of 5/10/2019
+  Possible update:
+    -Add error handling(The program breaks if a letter is entered when expecting a number.)
 */
 
 #include<iostream>
